@@ -5,26 +5,19 @@
 
 using namespace std;
 
+// Setting up the class
 class Movie
 {
-private:
-    string title;
-    int yearReleased;
-    string screenwriter;
-
 public:
-    Movie()
-    {
-        title = "";
-        yearReleased = 0;
-        screenwriter = "";
-    }
+    Movie() {}
+
     Movie(string title, int yearReleased, string screenwriter)
     {
         this->title = title;
         this->yearReleased = yearReleased;
         this->screenwriter = screenwriter;
     }
+
     string getTitle() const
     {
         return title;
@@ -38,7 +31,7 @@ public:
     {
         return yearReleased;
     }
-    void setYearReleased(string screenwriter)
+    void setYearReleased(int yearReleased)
     {
         this->yearReleased = yearReleased;
     }
@@ -56,33 +49,43 @@ public:
         cout << "\tYear released: " << yearReleased << endl;
         cout << "\tScreenwriter: " << screenwriter << endl;
     }
+
+private:
+    string title;
+    int yearReleased;
+    string screenwriter;
 };
 
 int main()
 {
     vector<Movie> movies;
-    ifstream inFile("C:\\Lab210\\210lab15.txt");
+    ifstream inFile("C:/Lab210/210lab15.txt");
 
-    if (inFile.is_open())
+    //Finile Checker
+    if (!inFile.is_open())
     {
-        string title, screenwriter;
-        int yearReleased;
-
-        while (inFile >> title >> yearReleased >> screenwriter)
-        {
-            Movie *movie = new Movie(title, yearReleased, screenwriter);
-            movies.push_back(*movie);
-        }
-        inFile.close();
-    }
-    else
-    {
-        cout << "Error opening File." << endl;
+        cout << "Error Can't Open File" << endl;
         return 1;
     }
+
+    string title, screenwriter;
+    int yearReleased;
+
+    while (getline(inFile, title)) // Read entire Title Line
+    {
+        if (inFile >> yearReleased)
+        {
+            inFile.ignore();
+            getline(inFile, screenwriter);                              // Read entire Screenwriter Line
+            movies.push_back(Movie(title, yearReleased, screenwriter)); // Push the movie class to the vector
+        }
+    }
+    inFile.close(); // Closing File
+
+    // Output File
+    cout << "Movies in File: " << endl;
     for (const Movie &movie : movies)
     {
-        cout << "Movies in File: " << endl;
         movie.print();
     }
 
