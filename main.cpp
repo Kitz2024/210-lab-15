@@ -1,3 +1,6 @@
+// Kit Pollinger
+// 210 - Lab - 15 | Movie Class
+
 #include <iostream>
 #include <vector>
 #include <string>
